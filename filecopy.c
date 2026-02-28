@@ -16,7 +16,24 @@
 
 int main(int argc, char *argv[])
 {
-	/* 
-	Your code is here
-	*/
+
+	int fd[2];
+
+	if (argc < 3) {
+		printf("Usage %s <input> <output>", argv[0]);
+		return 1;
+	}
+
+	char *input = argv[1];
+	char *output = argv[2];
+
+	FILE* inptr;
+	FILE* outptr;
+
+	inptr = fopen(input , "r");
+	outptr = fopen(output , "w");
+
+	pipe(fd);
+
+	return 0;
 }
