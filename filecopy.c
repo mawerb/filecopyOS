@@ -1,6 +1,6 @@
 /**
  * filecopy.c
- * 
+ * Created by: Clarence Maor Barzilay and Jonathan Cortez
  * This program copies files using a pipe.
  *
  */

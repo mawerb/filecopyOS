@@ -1,0 +1,7 @@
+This is a text created for the demo of the program filecopy which takes a file
+and creates a copy of it. This was done for CECS 326 by the amazing students
+Clarence Maor Barzilay and Jonathan Cortez. It helped us understand how processes 
+work a bit better and how IPC is coded to allow processes to communicate with 
+one another.
+
+Thank you for the fun learning experience professor Hailu Xu.
