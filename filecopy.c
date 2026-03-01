@@ -27,13 +27,38 @@ int main(int argc, char *argv[])
 	char *input = argv[1];
 	char *output = argv[2];
 
-	FILE* inptr;
-	FILE* outptr;
+	if (pipe(fd) == -1) {
+		printf("An error occured when opening the pipe\n");
+		return 1;
+	}
 
-	inptr = fopen(input , "r");
-	outptr = fopen(output , "w");
+	int pid = fork();
+	if (pid == 0) {
+		close(fd[WRITE_END]);
 
-	pipe(fd);
+		char buf[4096];
+		ssize_t n;
+		int dst_fd = open(output, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		
+		while ((n = read(fd[READ_END], buf, sizeof(buf))) > 0) {
+			write(fd[WRITE_END], buf, n);
+		}
+		close(fd[READ_END]);
+	} else {
+		close(fd[READ_END]);
+
+		char buf[4096];
+		ssize_t n;	
+		int src_fd = open(input, O_RDONLY);
+
+		while ((n = read(src_fd, buf, sizeof(buf))) > 0) {
+			write(fd[WRITE_END], buf, n);
+		}
+		close(fd[WRITE_END]);
+		close(src_fd);
+		
+		wait(NULL);
+	}
 
 	return 0;
 }
