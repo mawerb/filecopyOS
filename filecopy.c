@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 	int fd[2];
 
 	if (argc < 3) {
-		printf("Usage %s <input> <output>", argv[0]);
+		printf("Error: Usage %s <input> <output>", argv[0]);
 		return 1;
 	}
 
@@ -29,13 +29,13 @@ int main(int argc, char *argv[])
 	char *output = argv[2];
 
 	if (pipe(fd) == -1) {
-		printf("An error occured when opening the pipe\n");
+		printf("Error: An error occured when opening the pipe\n");
 		return 1;
 	}
 
 	int pid = fork();
 	if (pid == -1) {
-		printf("An error occured while creating the child process.\n");
+		printf("Error: An error occured while creating the child process.\n");
 		exit(1);
 	}
 	if (pid == 0) {
@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 		int dst_fd = open(output, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		
 		if (dst_fd < 0) {
-			printf("An error occured opening the output file %s\n", output);
+			printf("Error: An error occured while opening the output file %s\n", output);
 			exit(1);
 		}
 		
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 		int src_fd = open(input, O_RDONLY);
 
 		if (src_fd < 0) {
-			printf("An error occured opening the input file. Are you sure %s exists?\n", input);
+			printf("Erorr: An error occured while opening the input file. Are you sure %s exists?\n", input);
 			exit(1);
 		}
 
