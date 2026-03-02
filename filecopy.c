@@ -33,7 +33,8 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	int pid = fork();
+	pid_t pid = fork();
+
 	if (pid == -1) {
 		printf("Error: An error occured while creating the child process.\n");
 		exit(1);
@@ -47,6 +48,7 @@ int main(int argc, char *argv[])
 		
 		if (dst_fd < 0) {
 			printf("Error: An error occured while opening the output file %s\n", output);
+			close(fd[READ_END]);
 			exit(1);
 		}
 		
@@ -56,6 +58,8 @@ int main(int argc, char *argv[])
 
 		close(fd[READ_END]);
 		close(dst_fd);
+
+		exit(0);
 	} else {
 		close(fd[READ_END]);
 
@@ -64,7 +68,9 @@ int main(int argc, char *argv[])
 		int src_fd = open(input, O_RDONLY);
 
 		if (src_fd < 0) {
-			printf("Erorr: An error occured while opening the input file. Are you sure %s exists?\n", input);
+			printf("Error: An error occured while opening the input file. Are you sure %s exists?\n", input);
+			close(fd[WRITE_END]);
+			wait(NULL);
 			exit(1);
 		}
 
